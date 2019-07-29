@@ -1,4 +1,4 @@
-FROM hashicorp/terraform:0.12.5
+FROM hashicorp/terraform:0.11.11
 
 RUN apk add --update \
     python \
