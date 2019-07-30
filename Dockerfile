@@ -1,32 +1,13 @@
-FROM golang:alpine
+FROM quay.io/jzbruno/terraform-provider-shell:v0.2.1-alpine-2 as TERRAFORM_SHELL_PROVIDER
 
-ENV TERRAFORM_VERSION=0.11.13
+FROM hashicorp/terraform:0.11.13
 
-RUN apk add --update \
-    git \
-    bash \
-    openssh \
-    python \
-    python-dev \
-    py-pip \
-    build-base \
+RUN apk add --update python py-pip openssl ca-certificates groff zip \
     && pip install awscli --upgrade --user \
     && apk --purge -v del py-pip \
     && rm -rf /var/cache/apk/*
 
 RUN mv /root/.local/bin/aws /usr/bin/aws
+COPY --from=TERRAFORM_SHELL_PROVIDER /terraform-provider-shell  ~/.terraform.d/plugins/terraform-provider-shell
 
-ENV TF_DEV=true
-ENV TF_RELEASE=true
-
-WORKDIR $GOPATH/src/github.com/hashicorp/terraform
-RUN git clone https://github.com/hashicorp/terraform.git ./ && \
-    git checkout v${TERRAFORM_VERSION} && \
-    /bin/bash scripts/build.sh
-
-RUN mkdir -p ~/.terraform.d/plugins/ \
-    &&  wget -P ~/.terraform.d/plugins/.  https://github.com/jzbruno/terraform-provider-shell/releases/download/v0.1.0-alpha/terraform-provider-shell \
-    && chmod 755 ~/.terraform.d/plugins/terraform-provider-shell
-
-WORKDIR $GOPATH
 ENTRYPOINT ["terraform"]
