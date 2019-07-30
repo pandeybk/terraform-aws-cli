@@ -24,5 +24,9 @@ RUN git clone https://github.com/hashicorp/terraform.git ./ && \
     git checkout v${TERRAFORM_VERSION} && \
     /bin/bash scripts/build.sh
 
+RUN mkdir -p ~/.terraform.d/plugins/ \
+    &&  wget -P ~/.terraform.d/plugins/.  https://github.com/jzbruno/terraform-provider-shell/releases/download/v0.1.0-alpha/terraform-provider-shell \
+    && chmod 755 ~/.terraform.d/plugins/terraform-provider-shell
+
 WORKDIR $GOPATH
 ENTRYPOINT ["terraform"]
