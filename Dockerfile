@@ -9,7 +9,7 @@ RUN apk add --update python py-pip openssl ca-certificates groff zip \
 
 RUN mv /root/.local/bin/aws /usr/bin/aws
 
-RUN mkdir -p /.terraform.d/plugins/
-COPY --from=TERRAFORM_SHELL_PROVIDER /terraform-provider-shell  /.terraform.d/plugins/terraform-provider-shell
+RUN mkdir -p /root/.terraform.d/plugins/
+COPY --from=TERRAFORM_SHELL_PROVIDER /terraform-provider-shell  /root/.terraform.d/plugins/terraform-provider-shell
 
 ENTRYPOINT ["terraform"]
