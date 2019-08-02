@@ -1,5 +1,5 @@
 FROM quay.io/jzbruno/terraform-provider-shell:v0.2.1-alpine-2 as TERRAFORM_SHELL_PROVIDER
-FROM quay.io/jzbruno/terraform-provider-aws:v2.2.0-custom as TERRAFORM_AWS_PROVIDER
+FROM quay.io/jzbruno/terraform-provider-aws:v2.22.0-custom as TERRAFORM_AWS_PROVIDER
 
 FROM hashicorp/terraform:0.11.13
 
